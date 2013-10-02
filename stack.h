@@ -1,8 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
-
-/* Максимальное количество элементов в стеке */
-#define MAX_SIZE 100
+/* МОДУЛЬ ДЛЯ РАБОТЫ СО СТЕКОМ НА МАССИВЕ */
 
 /* Базовый тип элементов стека */
 typedef int ElemT;
@@ -11,12 +9,20 @@ typedef int ElemT;
 typedef struct {
 	/* Индекс, указывающий на вершину стека */
 	int t;
+	/* Максимальный размер стека */
+	int MAX_SIZE;
 	/* Массив элементов */
-	ElemT d[MAX_SIZE];
+	ElemT *d;
 } Stack;
 
 /* Инициализировать стек перед использованием */
-void init(Stack *s);
+void init(Stack *s, int max_size);
+
+/* Уничтожить стек */
+void kill(Stack *s);
+
+/* Очистить стек */
+void clear(Stack *s);
 
 /* Стек пуст */
 int isEmpty(Stack *s);

@@ -11,7 +11,7 @@ void dup(Stack *s) {
 int main(void) {
 	int i;
 	Stack s;
-	init(&s);
+	init(&s, 30);
 
 	for (i = 0; i < 10; ++i) {
 		push(&s, i);
@@ -22,5 +22,6 @@ int main(void) {
 		pop(&s);
 	}
 
+	kill(&s);
 	return 0;
 }

@@ -1,7 +1,20 @@
 #include "stack.h"
 #include <assert.h>
+#include <stdlib.h>
 
-void init(Stack *s) {
+void init(Stack *s, int max_size) {
+	s->d = (ElemT*)malloc(sizeof(ElemT) * max_size);
+	assert(s->d);
+	s->MAX_SIZE = max_size;
+	s->t = -1;
+}
+
+void kill(Stack *s) {
+	free(s->d);
+	s->t = -1;
+}
+
+void clear(Stack *s) {
 	s->t = -1;
 }
 
@@ -10,7 +23,7 @@ int isEmpty(Stack *s) {
 }
 
 int isFull(Stack *s) {
-	return s->t >= MAX_SIZE;
+	return s->t >= s->MAX_SIZE;
 }
 
 void push(Stack *s, ElemT a) {
