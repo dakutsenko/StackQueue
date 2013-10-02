@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 void init(Stack *s, int max_size) {
-	s->d = (ElemT*)malloc(sizeof(ElemT) * max_size);
-	assert(s->d);
 	s->MAX_SIZE = max_size;
 	s->t = -1;
+	s->d = (ElemT*)malloc(sizeof(ElemT) * max_size);
+	assert(s->d != NULL);
 }
 
 void kill(Stack *s) {

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "stack.h"
 
 /* Продублировать элемент на вершине стека */
