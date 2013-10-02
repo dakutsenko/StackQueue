@@ -24,7 +24,7 @@ void clearStack(StackPtr s);
 int isEmptyStack(StackPtr s);
 
 /* Добавить в стек новый элемент e */
-/* ПРЕДУСЛОВИЕ: стек не переполнен! */
+/* Предусловие: стек не переполнен! */
 void pushStack(StackPtr s, StackElemT e);
 
 /* Элемент из вершины стека */
