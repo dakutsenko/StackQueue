@@ -1,22 +1,16 @@
 #ifndef STACK_H
 #define STACK_H
-/* МОДУЛЬ ДЛЯ РАБОТЫ СО СТЕКОМ НА МАССИВЕ */
+
+/* МОДУЛЬ ДЛЯ РАБОТЫ СО СТЕКОМ */
 
 /* Базовый тип элементов стека */
 typedef int ElemT;
 
-/* Стек на массиве */
-typedef struct {
-	/* Индекс, указывающий на вершину стека */
-	int t;
-	/* Максимальный размер стека */
-	int MAX_SIZE;
-	/* Массив элементов */
-	ElemT *d;
-} Stack;
+/* Тип данных "Стек магазинного типа", реализация скрыта */
+typedef struct Stack Stack;
 
-/* Создать новый стек */
-Stack *createStack(int maxSize);
+/* Создать новый стек с начальной вместимостью startCapacity */
+Stack *newStack(int startCapacity);
 
 /* Уничтожить стек */
 void killStack(Stack *s);
@@ -27,12 +21,9 @@ void clear(Stack *s);
 /* Стек пуст */
 int isEmpty(Stack *s);
 
-/* Стек заполнен, нет места для нового элемента */
-int isFull(Stack *s);
-
-/* Добавить в стек новый элемент a */
+/* Добавить в стек новый элемент e */
 /* ПРЕДУСЛОВИЕ: стек не переполнен! */
-void push(Stack *s, ElemT a);
+void push(Stack *s, ElemT e);
 
 /* Элемент из вершины стека */
 /* ПРЕДУСЛОВИЕ: стек не пуст! */

@@ -9,7 +9,7 @@ void dup(Stack *s) {
 /* ОСНОВНАЯ ПРОГРАММА */
 int main(void) {
 	int i;
-	Stack *s = createStack(30);
+	Stack *s = newStack(3);
 
 	for (i = 0; i < 10; ++i) {
 		push(s, i);
