@@ -2,16 +2,23 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void init(Stack *s, int max_size) {
-	s->MAX_SIZE = max_size;
-	s->t = -1;
-	s->d = (ElemT*)malloc(sizeof(ElemT) * max_size);
-	assert(s->d != NULL);
+Stack *createStack(int maxSize) {
+	/* Выделить память под структуру стека */
+	Stack *res = (Stack*)malloc(sizeof(Stack));
+	assert(res != NULL);
+	/* Выделить память под массив элементов */
+	res->d = (ElemT*)malloc(maxSize * sizeof(ElemT));
+	assert(res->d != NULL);
+	/* Инициализировать максимальное количество элементов */
+	res->MAX_SIZE = maxSize;
+	/* Инициализировать начальную позицию вершины стека */
+	res->t = -1;
+	return res;
 }
 
-void kill(Stack *s) {
+void killStack(Stack *s) {
 	free(s->d);
-	s->t = -1;
+	free(s);
 }
 
 void clear(Stack *s) {

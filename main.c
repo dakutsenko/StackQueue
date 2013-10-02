@@ -9,18 +9,17 @@ void dup(Stack *s) {
 /* ОСНОВНАЯ ПРОГРАММА */
 int main(void) {
 	int i;
-	Stack s;
-	init(&s, 30);
+	Stack *s = createStack(30);
 
 	for (i = 0; i < 10; ++i) {
-		push(&s, i);
-		dup(&s);
+		push(s, i);
+		dup(s);
 	}
-	while (!isEmpty(&s)) {
-		printf("%d\n", top(&s));
-		pop(&s);
+	while (!isEmpty(s)) {
+		printf("%d\n", top(s));
+		pop(s);
 	}
 
-	kill(&s);
+	killStack(s);
 	return 0;
 }

@@ -15,11 +15,11 @@ typedef struct {
 	ElemT *d;
 } Stack;
 
-/* Инициализировать стек перед использованием */
-void init(Stack *s, int max_size);
+/* Создать новый стек */
+Stack *createStack(int maxSize);
 
 /* Уничтожить стек */
-void kill(Stack *s);
+void killStack(Stack *s);
 
 /* Очистить стек */
 void clear(Stack *s);

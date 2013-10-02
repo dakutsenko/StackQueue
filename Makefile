@@ -1,15 +1,15 @@
-TARGET = stack
+CC = gcc
+CFLAGS = -std=c89 -Wall -c
+LDFLAGS = -Wall
 OBJECTS = stack.o main.o
+EXECUTABLE = stack
 
-$(TARGET): $(OBJECTS)
-	gcc -Wall -o $@ $^
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) -o $@ $^
 
 .PHONY: clean
 clean:
-	-rm $(TARGET) $(OBJECTS)
+	$(RM) $(EXECUTABLE) $(OBJECTS)
 
-stack.o: stack.c stack.h
-	gcc -std=c89 -Wall -c $<
-
-main.o: main.c stack.h
-	gcc -std=c89 -Wall -c $<
+%.o: %.c stack.h
+	$(CC) $(CFLAGS) $<
