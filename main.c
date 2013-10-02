@@ -2,24 +2,24 @@
 #include "stack.h"
 
 /* Продублировать элемент на вершине стека */
-void dup(Stack *s) {
-	push(s, top(s));
+void dupStack(StackPtr s) {
+	pushStack(s, topStack(s));
 }
 
 /* ОСНОВНАЯ ПРОГРАММА */
 int main(void) {
 	int i;
-	Stack *s = newStack(3);
+	StackPtr s = newStack(3);
 
 	for (i = 0; i < 10; ++i) {
-		push(s, i);
-		dup(s);
+		pushStack(s, i);
+		dupStack(s);
 	}
-	while (!isEmpty(s)) {
-		printf("%d\n", top(s));
-		pop(s);
+	while (!isEmptyStack(s)) {
+		printf("%d\n", topStack(s));
+		popStack(s);
 	}
 
-	killStack(s);
+	deleteStack(s);
 	return 0;
 }

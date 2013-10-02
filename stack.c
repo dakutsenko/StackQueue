@@ -1,6 +1,6 @@
-#include "stack.h"
 #include <assert.h>
 #include <stdlib.h>
+#include "stack.h"
 
 /* Реализация стека на массиве, 
  * массив увеличивается при необходимости */
@@ -11,15 +11,16 @@ struct Stack {
 	/* Вместимость стека */
 	size_t capacity;
 	/* Массив элементов */
-	ElemT *d;
+	StackElemT *d;
 };
 
-Stack *newStack(int startCapacity) {
+StackPtr newStack(int startCapacity) {
+	assert(startCapacity > 0);
 	/* Выделить память под структуру стека */
-	Stack *res = (Stack*)malloc(sizeof(Stack));
+	StackPtr res = (StackPtr)malloc(sizeof(struct Stack));
 	assert(res != NULL);
 	/* Выделить память под массив элементов */
-	res->d = (ElemT*)calloc(startCapacity, sizeof(ElemT));
+	res->d = (StackElemT*)calloc(startCapacity, sizeof(StackElemT));
 	assert(res->d != NULL);
 	/* Инициализировать вместимость стека */
 	res->capacity = startCapacity;
@@ -29,62 +30,62 @@ Stack *newStack(int startCapacity) {
 	return res;
 }
 
-void killStack(Stack *s) {
+void deleteStack(StackPtr s) {
 	/* Удалить массив с элементами */
 	free(s->d);
 	/* Удалить структуру стека */
 	free(s);
 }
 
-void clear(Stack *s) {
+void clearStack(StackPtr s) {
 	/* Просто переустановить вершину в начальную позицию */
 	s->t = -1;
 }
 
-int isEmpty(Stack *s) {
+int isEmptyStack(StackPtr s) {
 	return s->t < 0;
 }
 
-/* ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ extendIfNecessary() */
+/* Вспомогательная функция для extendStackIfNecessary() */
 /* Стек заполнен, нет места для нового элемента */
-int isFull(Stack *s) {
+int isFullStack(StackPtr s) {
 	return s->t >= s->capacity - 1;
 }
-/* ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ push() */
+/* Вспомогательная функция для pushStack() */
 /* Увеличить допустимый размер стека в K раз, если стек переполнен */
 #define K 2
-void extendIfNecessary(Stack *s) {
+void extendStackIfNecessary(StackPtr s) {
 	/* Если стек переполнен */
-	if (isFull(s)) {
+	if (isFullStack(s)) {
 		/* Увеличить вместимость стека в K раз */
 		s->capacity *= K;
 		/* Новый размер массива (в байтах) */
-		size_t newSize = s->capacity * sizeof(ElemT);
+		size_t newSize = s->capacity * sizeof(StackElemT);
 		/* Перераспределить память под новый размер */
-		s->d = (ElemT*)realloc(s->d, newSize);
+		s->d = (StackElemT*)realloc(s->d, newSize);
 		assert(s->d != NULL);
 	}
 }
-void push(Stack *s, ElemT e) {
+void pushStack(StackPtr s, StackElemT e) {
 	/* Расширить массив, если это необходимо */
-	extendIfNecessary(s);
+	extendStackIfNecessary(s);
 	/* Переставить вершину на следующую позицию */
 	++(s->t);
 	/* Записать в неё новое значение */
 	s->d[s->t] = e;
 }
 
-ElemT top(Stack *s) {
-	assert(!isEmpty(s));
+StackElemT topStack(StackPtr s) {
+	assert(!isEmptyStack(s));
 	return s->d[s->t];
 }
 
-void pop(Stack *s) {
-	assert(!isEmpty(s));
+void popStack(StackPtr s) {
+	assert(!isEmptyStack(s));
 	/* Просто переставить вершину на предыдущий элемент */
 	--(s->t);
 }
 
-int size(Stack *s) {
+int sizeStack(StackPtr s) {
 	return s->t + 1;
 }

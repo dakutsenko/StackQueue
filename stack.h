@@ -1,39 +1,41 @@
 #ifndef STACK_H
 #define STACK_H
-
-/* МОДУЛЬ ДЛЯ РАБОТЫ СО СТЕКОМ */
+/* Модуль для работы со стеком */
 
 /* Базовый тип элементов стека */
-typedef int ElemT;
+typedef int StackElemT;
 
-/* Тип данных "Стек магазинного типа", реализация скрыта */
-typedef struct Stack Stack;
+/* Тип данных "Стек магазинного типа", 
+ * реализация скрыта, доступ через указатель */
+struct Stack;
+typedef struct Stack *StackPtr;
 
 /* Создать новый стек с начальной вместимостью startCapacity */
-Stack *newStack(int startCapacity);
+/* Предусловие: startCapacity > 0 */
+StackPtr newStack(int startCapacity);
 
 /* Уничтожить стек */
-void killStack(Stack *s);
+void deleteStack(StackPtr s);
 
 /* Очистить стек */
-void clear(Stack *s);
+void clearStack(StackPtr s);
 
 /* Стек пуст */
-int isEmpty(Stack *s);
+int isEmptyStack(StackPtr s);
 
 /* Добавить в стек новый элемент e */
 /* ПРЕДУСЛОВИЕ: стек не переполнен! */
-void push(Stack *s, ElemT e);
+void pushStack(StackPtr s, StackElemT e);
 
 /* Элемент из вершины стека */
-/* ПРЕДУСЛОВИЕ: стек не пуст! */
-ElemT top(Stack *s);
+/* Предусловие: стек не пуст! */
+StackElemT topStack(StackPtr s);
 
 /* Удалить верхний элемент из стека */
-/* ПРЕДУСЛОВИЕ: стек не пуст! */
-void pop(Stack *s);
+/* Предусловие: стек не пуст! */
+void popStack(StackPtr s);
 
 /* Количество элементов в стеке */
-int size(Stack *s);
+int sizeStack(StackPtr s);
 
 #endif /* STACK_H */
