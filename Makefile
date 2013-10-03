@@ -13,7 +13,7 @@ stack.o: stack.c stack.h
 	gcc -std=c89 -Wall -c stack.c
 #3. Если необходимо, то компиляция основной программы в объектный файл main.o
 main.o: main.c stack.h
-	gcc -std=c89 -Wall -c stack.c
+	gcc -std=c89 -Wall -c main.c
 #4. Удаление скомпилированных бинарных файлов
 clean:
 	rm -f stack.o main.o stackprobe

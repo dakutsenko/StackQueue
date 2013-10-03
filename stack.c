@@ -46,33 +46,43 @@ int isEmptyStack(StackPtr s) {
 	return s->t < 0;
 }
 
-/* Вспомогательная функция для extendStackIfNecessary() */
+/* Вспомогательная функция для pushStack() */
 /* Стек заполнен, нет места для нового элемента */
 int isFullStack(StackPtr s) {
 	return s->t >= s->capacity - 1;
 }
+
 /* Вспомогательная функция для pushStack() */
-/* Увеличить допустимый размер стека в K раз, если стек переполнен */
+/* Увеличить допустимый размер стека в K раз */
 #define K 2
-void extendStackIfNecessary(StackPtr s) {
-	/* Если стек переполнен */
-	if (isFullStack(s)) {
-		/* Увеличить вместимость стека в K раз */
-		s->capacity *= K;
-		/* Новый размер массива (в байтах) */
-		size_t newSize = s->capacity * sizeof(StackElemT);
-		/* Перераспределить память под новый размер */
-		s->d = (StackElemT*)realloc(s->d, newSize);
-		assert(s->d != NULL);
-	}
+void extendStack(StackPtr s) {
+	/* Увеличить вместимость стека в K раз */
+	s->capacity *= K;
+	/* Новый размер массива (в байтах) */
+	size_t newSize = s->capacity * sizeof(StackElemT);
+	/* Перераспределить память для массива под новый размер */
+	s->d = (StackElemT*)realloc(s->d, newSize);
+	assert(s->d != NULL);
 }
-void pushStack(StackPtr s, StackElemT e) {
-	/* Расширить массив, если это необходимо */
-	extendStackIfNecessary(s);
+
+/* Вспомогательная функция для pushStack() */
+/* Добавить элемент e в стек */
+/* Предусловие: стек не переполнен! */
+void addElementToStack(StackPtr s, StackElemT e) {
+	assert(!isFullStack(s));
 	/* Переставить вершину на следующую позицию */
 	++(s->t);
 	/* Записать в неё новое значение */
 	s->d[s->t] = e;
+}
+
+void pushStack(StackPtr s, StackElemT e) {
+	/* Расширить массив, если он заполнен */
+	if (isFullStack(s)) {
+		extendStack(s);
+	}
+	/* Добавить в стек элемент */
+	addElementToStack(s, e);
 }
 
 StackElemT topStack(StackPtr s) {

@@ -17,14 +17,13 @@ StackPtr newStack(int startCapacity);
 /* Уничтожить стек */
 void deleteStack(StackPtr s);
 
-/* Очистить стек */
+/* Очистить стек, сделать его пустым */
 void clearStack(StackPtr s);
 
 /* Стек пуст */
 int isEmptyStack(StackPtr s);
 
 /* Добавить в стек новый элемент e */
-/* Предусловие: стек не переполнен! */
 void pushStack(StackPtr s, StackElemT e);
 
 /* Элемент из вершины стека */
