@@ -5,7 +5,7 @@
 /* Реализация стека на массиве, 
  * массив увеличивается при необходимости */
 
-struct Stack {
+struct StackT {
 	/* Индекс, указывающий на вершину стека */
 	int t;
 	/* Вместимость стека */
@@ -17,7 +17,7 @@ struct Stack {
 StackPtr newStack(int startCapacity) {
 	assert(startCapacity > 0);
 	/* Выделить память под структуру стека */
-	StackPtr res = (StackPtr)malloc(sizeof(struct Stack));
+	StackPtr res = (StackPtr)malloc(sizeof(struct StackT));
 	assert(res != NULL);
 	/* Выделить память под массив элементов */
 	res->d = (StackElemT*)calloc(startCapacity, sizeof(StackElemT));
@@ -56,10 +56,10 @@ int isFullStack(StackPtr s) {
 /* Увеличить допустимый размер стека в K раз */
 #define K 2
 void extendStack(StackPtr s) {
+	/* Новый размер массива (в байтах) */
+	size_t newSize = s->capacity * K * sizeof(StackElemT);
 	/* Увеличить вместимость стека в K раз */
 	s->capacity *= K;
-	/* Новый размер массива (в байтах) */
-	size_t newSize = s->capacity * sizeof(StackElemT);
 	/* Перераспределить память для массива под новый размер */
 	s->d = (StackElemT*)realloc(s->d, newSize);
 	assert(s->d != NULL);
