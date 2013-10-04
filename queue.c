@@ -1,6 +1,6 @@
 #include <assert.h>
 #include <stdlib.h>
-#include <queue.h>
+#include "queue.h"
 
 /* Реализация очереди на массиве,
  * массив "зациклен" и увеличивается при необходимости */
@@ -13,7 +13,7 @@ struct QueueT {
 	/* Количество элементов в очереди */
 	int size;
 	/* Вместимость очереди */
-	size_t capacity;
+	int capacity;
 	/* Массив элементов */
 	QueueElemT *d;
 };
@@ -53,13 +53,13 @@ void clearQueue(QueuePtr q) {
 }
 
 int isEmptyQueue(QueuePtr q) {
-	return q->size = 0;
+	return q->size == 0;
 }
 
 /* Вспомогательная функция для enqueue() */
 /* Очередь заполнена, нет места для нового элемента */
 int isFullQueue(QueuePtr q) {
-	return q->size = q->capacity;
+	return q->size == q->capacity;
 }
 
 /* Вспомогательная функция для enqueue() */
@@ -77,7 +77,7 @@ void extendQueue(QueuePtr q) {
 		assert(q->d != NULL);
 	} else {
 		/* Иначе создать новый более вместительный массив */
-		StackElemT *newData = (StackElemT*)malloc(newSize);
+		QueueElemT *newData = (QueueElemT*)malloc(newSize);
 		assert(newData != NULL);
 		/* Сначала скопировать в новый массив первую половину элементов,
 		 * расположенную от головы очереди до конца старого массива */
@@ -141,7 +141,7 @@ void dequeue(QueuePtr q) {
 		q->front = 0;
 	}
 	/* Уменьшить количество элементов */
-	q->size--;
+	(q->size)--;
 }
 
 QueueElemT frontQueue(QueuePtr q) {

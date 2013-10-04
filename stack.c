@@ -9,7 +9,7 @@ struct StackT {
 	/* Индекс, указывающий на вершину стека */
 	int t;
 	/* Вместимость стека */
-	size_t capacity;
+	int capacity;
 	/* Массив элементов */
 	StackElemT *d;
 };
@@ -57,12 +57,12 @@ int isFullStack(StackPtr s) {
 #define K 2
 void extendStack(StackPtr s) {
 	/* Новый размер массива (в байтах) */
-	size_t newSize = s->capacity * K * sizeof(StackElemT);
-	/* Увеличить вместимость стека в K раз */
-	s->capacity *= K;
+	int newSize = (s->capacity) * K * sizeof(StackElemT);
 	/* Перераспределить память для массива под новый размер */
 	s->d = (StackElemT*)realloc(s->d, newSize);
 	assert(s->d != NULL);
+	/* Увеличить вместимость стека в K раз */
+	s->capacity *= K;
 }
 
 /* Вспомогательная функция для pushStack() */
@@ -71,7 +71,7 @@ void extendStack(StackPtr s) {
 void addElementToStack(StackPtr s, StackElemT e) {
 	assert(!isFullStack(s));
 	/* Переставить вершину на следующую позицию */
-	++(s->t);
+	s->t++;
 	/* Записать в неё новое значение */
 	s->d[s->t] = e;
 }
@@ -93,7 +93,7 @@ StackElemT topStack(StackPtr s) {
 void popStack(StackPtr s) {
 	assert(!isEmptyStack(s));
 	/* Просто переставить вершину на предыдущий элемент */
-	--(s->t);
+	s->t--;
 }
 
 int sizeStack(StackPtr s) {
