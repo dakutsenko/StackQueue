@@ -3,12 +3,13 @@
 /* Модуль для работы со стеком */
 
 /* Базовый тип элементов стека */
-typedef int StackElemT;
+typedef int StackItemT;
 
 /* Тип данных "Стек магазинного типа", 
  * реализация скрыта, доступ через указатель */
 struct StackT;
 typedef struct StackT* StackPtr;
+typedef const struct StackT* StackConstPtr;
 
 /* Создать новый стек с начальной вместимостью startCapacity */
 /* Предусловие: startCapacity > 0 */
@@ -21,20 +22,20 @@ void deleteStack(StackPtr s);
 void clearStack(StackPtr s);
 
 /* Стек пуст */
-int isEmptyStack(StackPtr s);
+int isEmptyStack(StackConstPtr s);
 
 /* Добавить в стек новый элемент e */
-void pushStack(StackPtr s, StackElemT e);
+void pushStack(StackPtr s, StackItemT e);
 
 /* Элемент из вершины стека */
 /* Предусловие: стек не пуст! */
-StackElemT topStack(StackPtr s);
+StackItemT topStack(StackConstPtr s);
 
 /* Удалить верхний элемент из стека */
 /* Предусловие: стек не пуст! */
 void popStack(StackPtr s);
 
 /* Количество элементов в стеке */
-int sizeStack(StackPtr s);
+int sizeStack(StackConstPtr s);
 
 #endif /* STACK_H */

@@ -24,7 +24,6 @@ int main(void) {
 	for (i = 0; i < 10; ++i) {
 		pushStack(s, i);
 		dupStack(s);
-		enqueue(q, i);
 	}
 	while (!isEmptyStack(s)) {
 		printf("%d\n", topStack(s));
@@ -32,6 +31,9 @@ int main(void) {
 	}
 
 	printf("\n");
+	for (i = 0; i < 10; ++i) {
+		enqueue(q, i);
+	}
 	for (i = 0; i < 5; ++i) {
 		enqueue(q, frontQueue(q));
 		dequeue(q);

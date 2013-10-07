@@ -11,16 +11,16 @@ struct StackT {
 	/* Вместимость стека */
 	int capacity;
 	/* Массив элементов */
-	StackElemT *d;
+	StackItemT *d;
 };
 
 StackPtr newStack(int startCapacity) {
-	assert(startCapacity > 0);
 	/* Выделить память под структуру стека */
 	StackPtr res = (StackPtr)malloc(sizeof(struct StackT));
 	assert(res != NULL);
 	/* Выделить память под массив элементов */
-	res->d = (StackElemT*)calloc(startCapacity, sizeof(StackElemT));
+	assert(startCapacity > 0);
+	res->d = (StackItemT*)calloc(startCapacity, sizeof(StackItemT));
 	assert(res->d != NULL);
 	/* Инициализировать вместимость стека */
 	res->capacity = startCapacity;
@@ -42,13 +42,13 @@ void clearStack(StackPtr s) {
 	s->t = -1;
 }
 
-int isEmptyStack(StackPtr s) {
+int isEmptyStack(StackConstPtr s) {
 	return s->t < 0;
 }
 
 /* Вспомогательная функция для pushStack() */
 /* Стек заполнен, нет места для нового элемента */
-int isFullStack(StackPtr s) {
+int isFullStack(StackConstPtr s) {
 	return s->t >= s->capacity - 1;
 }
 
@@ -57,9 +57,9 @@ int isFullStack(StackPtr s) {
 #define K 2
 void extendStack(StackPtr s) {
 	/* Новый размер массива (в байтах) */
-	int newSize = (s->capacity) * K * sizeof(StackElemT);
+	int newSize = (s->capacity) * K * sizeof(StackItemT);
 	/* Перераспределить память для массива под новый размер */
-	s->d = (StackElemT*)realloc(s->d, newSize);
+	s->d = (StackItemT*)realloc(s->d, newSize);
 	assert(s->d != NULL);
 	/* Увеличить вместимость стека в K раз */
 	s->capacity *= K;
@@ -68,7 +68,7 @@ void extendStack(StackPtr s) {
 /* Вспомогательная функция для pushStack() */
 /* Добавить элемент e в стек */
 /* Предусловие: стек не переполнен! */
-void addElementToStack(StackPtr s, StackElemT e) {
+void addItementToStack(StackPtr s, StackItemT e) {
 	assert(!isFullStack(s));
 	/* Переставить вершину на следующую позицию */
 	s->t++;
@@ -76,16 +76,16 @@ void addElementToStack(StackPtr s, StackElemT e) {
 	s->d[s->t] = e;
 }
 
-void pushStack(StackPtr s, StackElemT e) {
+void pushStack(StackPtr s, StackItemT e) {
 	/* Расширить массив, если он заполнен */
 	if (isFullStack(s)) {
 		extendStack(s);
 	}
 	/* Добавить в стек элемент */
-	addElementToStack(s, e);
+	addItementToStack(s, e);
 }
 
-StackElemT topStack(StackPtr s) {
+StackItemT topStack(StackConstPtr s) {
 	assert(!isEmptyStack(s));
 	return s->d[s->t];
 }
@@ -96,6 +96,6 @@ void popStack(StackPtr s) {
 	s->t--;
 }
 
-int sizeStack(StackPtr s) {
+int sizeStack(StackConstPtr s) {
 	return s->t + 1;
 }

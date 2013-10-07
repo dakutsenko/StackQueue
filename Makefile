@@ -10,13 +10,13 @@ sdprobe: stack.o queue.o main.o
 	gcc -Wall stack.o queue.o main.o -o sdprobe
 #2. Если необходимо, то компиляция модуля стека в объектный файл stack.o
 stack.o: stack.c stack.h
-	gcc -std=c89 -Wall -c stack.c
+	gcc -std=c89 -pedantic -Wall -c stack.c
 #3. Если необходимо, то компиляция модуля очереди в объектный файл queue.o
 queue.o: queue.c queue.h
-	gcc -std=c89 -Wall -c queue.c
+	gcc -std=c89 -pedantic -Wall -c queue.c
 #3. Если необходимо, то компиляция основной программы в объектный файл main.o
 main.o: main.c stack.h queue.h
-	gcc -std=c89 -Wall -c main.c
+	gcc -std=c89 -pedantic -Wall -c main.c
 #4. Удаление скомпилированных бинарных файлов
 clean:
 	rm -f stack.o main.o queue.o sdprobe

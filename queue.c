@@ -15,16 +15,16 @@ struct QueueT {
 	/* Вместимость очереди */
 	int capacity;
 	/* Массив элементов */
-	QueueElemT *d;
+	QueueItemT *d;
 };
 
 QueuePtr newQueue(int startCapacity) {
-	assert(startCapacity > 0);
 	/* Выделить память под структуру очереди */
 	QueuePtr res = (QueuePtr)malloc(sizeof(struct QueueT));
 	assert(res != NULL);
 	/* Выделить память под массив элементов */
-	res->d = (QueueElemT*)calloc(startCapacity, sizeof(QueueElemT));
+	assert(startCapacity > 0);
+	res->d = (QueueItemT*)calloc(startCapacity, sizeof(QueueItemT));
 	assert(res->d != NULL);
 	/* Инициализировать вместимость очереди */
 	res->capacity = startCapacity;
@@ -52,13 +52,13 @@ void clearQueue(QueuePtr q) {
 	q->size = 0;
 }
 
-int isEmptyQueue(QueuePtr q) {
+int isEmptyQueue(QueueConstPtr q) {
 	return q->size == 0;
 }
 
 /* Вспомогательная функция для enqueue() */
 /* Очередь заполнена, нет места для нового элемента */
-int isFullQueue(QueuePtr q) {
+int isFullQueue(QueueConstPtr q) {
 	return q->size == q->capacity;
 }
 
@@ -68,16 +68,16 @@ int isFullQueue(QueuePtr q) {
 void extendQueue(QueuePtr q) {
 	int i, j;
 	/* Новый размер массива (в байтах) */
-	size_t newSize = q->capacity * K * sizeof(QueueElemT);
+	size_t newSize = q->capacity * K * sizeof(QueueItemT);
 	/* Расширить массив */
 	if (q->front < q->back) {
 		/* Если элементы расположены в массиве непрерывно от головы до хвоста,
 		 * то просто перераспределить память под новый размер */
-		q->d = (QueueElemT*)realloc(q->d, newSize);
+		q->d = (QueueItemT*)realloc(q->d, newSize);
 		assert(q->d != NULL);
 	} else {
 		/* Иначе создать новый более вместительный массив */
-		QueueElemT *newData = (QueueElemT*)malloc(newSize);
+		QueueItemT *newData = (QueueItemT*)malloc(newSize);
 		assert(newData != NULL);
 		/* Сначала скопировать в новый массив первую половину элементов,
 		 * расположенную от головы очереди до конца старого массива */
@@ -104,7 +104,7 @@ void extendQueue(QueuePtr q) {
 /* Вспомогательная функция для enqueue() */
 /* Добавить элемент e в очередь */
 /* Предусловие: очередь не переполнена! */
-void addElementToQueue(QueuePtr q, QueueElemT e) {
+void addItementToQueue(QueuePtr q, QueueItemT e) {
 	assert(!isFullQueue(q));
 	/* Поместить элемент в хвост очереди */
 	if (q->back < q->capacity) {
@@ -122,13 +122,13 @@ void addElementToQueue(QueuePtr q, QueueElemT e) {
 	q->size++;
 }
 
-void enqueue(QueuePtr q, QueueElemT e) {
+void enqueue(QueuePtr q, QueueItemT e) {
 	/* Расширить массив, если он заполнен */
 	if (isFullQueue(q)) {
 		extendQueue(q);
 	}
 	/* Поставить элемент в очередь */
-	addElementToQueue(q, e);
+	addItementToQueue(q, e);
 }
 
 void dequeue(QueuePtr q) {
@@ -144,11 +144,11 @@ void dequeue(QueuePtr q) {
 	(q->size)--;
 }
 
-QueueElemT frontQueue(QueuePtr q) {
+QueueItemT frontQueue(QueueConstPtr q) {
 	assert(!isEmptyQueue(q));
 	return q->d[q->front];
 }
 
-int sizeQueue(QueuePtr q) {
+int sizeQueue(QueueConstPtr q) {
 	return q->size;
 }

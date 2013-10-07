@@ -3,12 +3,13 @@
 /* Модуль для работы с очередью */
 
 /* Базовый тип элементов очереди */
-typedef int QueueElemT;
+typedef int QueueItemT;
 
 /* Тип данных "Очередь",
  * реализация скрыта, доступ через указатель */
 struct QueueT;
 typedef struct QueueT *QueuePtr;
+typedef const struct QueueT *QueueConstPtr;
 
 /* Создать новую очередь с начальной вместимостью startCapacity */
 /* Предусловие: startCapacity > 0 */
@@ -21,10 +22,10 @@ void deleteQueue(QueuePtr q);
 void clearQueue(QueuePtr q);
 
 /* Очередь пуста */
-int isEmptyQueue(QueuePtr q);
+int isEmptyQueue(QueueConstPtr q);
 
 /* Добавить новый элемент e в хвост очереди */
-void enqueue(QueuePtr q, QueueElemT e);
+void enqueue(QueuePtr q, QueueItemT e);
 
 /* Удалить элемент из головы очереди */
 /* Предусловие: очередь не пуста! */
@@ -32,9 +33,9 @@ void dequeue(QueuePtr q);
 
 /* Головной элемент очереди */
 /* Предусловие: очередь не пуста! */
-QueueElemT frontQueue(QueuePtr q);
+QueueItemT frontQueue(QueueConstPtr q);
 
 /* Количество элементов в очереди */
-int sizeQueue(QueuePtr q);
+int sizeQueue(QueueConstPtr q);
 
 #endif /* QUEUE_H */
