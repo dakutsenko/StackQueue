@@ -52,13 +52,13 @@ void clearQueue(QueuePtr q) {
 	q->size = 0;
 }
 
-int isEmptyQueue(QueueConstPtr q) {
+int isEmptyQueue(QueueReadOnlyPtr q) {
 	return q->size == 0;
 }
 
 /* Вспомогательная функция для enqueue() */
 /* Очередь заполнена, нет места для нового элемента */
-int isFullQueue(QueueConstPtr q) {
+int isFullQueue(QueueReadOnlyPtr q) {
 	return q->size == q->capacity;
 }
 
@@ -144,11 +144,11 @@ void dequeue(QueuePtr q) {
 	(q->size)--;
 }
 
-QueueItemT frontQueue(QueueConstPtr q) {
+QueueItemT frontQueue(QueueReadOnlyPtr q) {
 	assert(!isEmptyQueue(q));
 	return q->d[q->front];
 }
 
-int sizeQueue(QueueConstPtr q) {
+int sizeQueue(QueueReadOnlyPtr q) {
 	return q->size;
 }

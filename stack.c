@@ -42,13 +42,13 @@ void clearStack(StackPtr s) {
 	s->t = -1;
 }
 
-int isEmptyStack(StackConstPtr s) {
+int isEmptyStack(StackReadOnlyPtr s) {
 	return s->t < 0;
 }
 
 /* Вспомогательная функция для pushStack() */
 /* Стек заполнен, нет места для нового элемента */
-int isFullStack(StackConstPtr s) {
+int isFullStack(StackReadOnlyPtr s) {
 	return s->t >= s->capacity - 1;
 }
 
@@ -85,7 +85,7 @@ void pushStack(StackPtr s, StackItemT e) {
 	addItementToStack(s, e);
 }
 
-StackItemT topStack(StackConstPtr s) {
+StackItemT topStack(StackReadOnlyPtr s) {
 	assert(!isEmptyStack(s));
 	return s->d[s->t];
 }
@@ -96,6 +96,6 @@ void popStack(StackPtr s) {
 	s->t--;
 }
 
-int sizeStack(StackConstPtr s) {
+int sizeStack(StackReadOnlyPtr s) {
 	return s->t + 1;
 }

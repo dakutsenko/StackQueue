@@ -9,7 +9,7 @@ typedef int QueueItemT;
  * реализация скрыта, доступ через указатель */
 struct QueueT;
 typedef struct QueueT *QueuePtr;
-typedef const struct QueueT *QueueConstPtr;
+typedef const struct QueueT *QueueReadOnlyPtr;
 
 /* Создать новую очередь с начальной вместимостью startCapacity */
 /* Предусловие: startCapacity > 0 */
@@ -22,7 +22,7 @@ void deleteQueue(QueuePtr q);
 void clearQueue(QueuePtr q);
 
 /* Очередь пуста */
-int isEmptyQueue(QueueConstPtr q);
+int isEmptyQueue(QueueReadOnlyPtr q);
 
 /* Добавить новый элемент e в хвост очереди */
 void enqueue(QueuePtr q, QueueItemT e);
@@ -33,9 +33,9 @@ void dequeue(QueuePtr q);
 
 /* Головной элемент очереди */
 /* Предусловие: очередь не пуста! */
-QueueItemT frontQueue(QueueConstPtr q);
+QueueItemT frontQueue(QueueReadOnlyPtr q);
 
 /* Количество элементов в очереди */
-int sizeQueue(QueueConstPtr q);
+int sizeQueue(QueueReadOnlyPtr q);
 
 #endif /* QUEUE_H */
