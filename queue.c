@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "queue.h"
 
 /* Реализация очереди на массиве,
@@ -62,49 +63,77 @@ int isFullQueue(QueueReadOnlyPtr q) {
 	return q->size == q->capacity;
 }
 
+/* Вспомогательная функция для extendQueue() */
+/* Перенести элементы очереди oldQ из старого массива в новый
+ * (более вместительный) newData размера newSize, 
+ * восстановив при этом непрерывность последовательности,
+ * так как в данном случае исходная последовательность разбита
+ * на хвостовую и головную части,
+ * причём хвостовая часть расположена в начале старого массива,
+ * а головная - в конце. */
+void copyQueue(QueueReadOnlyPtr oldQ, QueueItemT newData[], int newSize) {
+	QueueItemT *oldHeadAddr, *newHeadAddr, *oldTailAddr, *newTailAddr;
+	int headOffset, headSize, tailSize;
+	assert(oldQ->front >= oldQ->back);
+	assert(newSize >= oldQ->capacity);
+	/* Смещение головного элемента очереди
+	 * относительно начала старого массива */
+	headOffset = oldQ->capacity - oldQ->front;
+	/* Адрес головы очереди в старом массиве */
+	oldHeadAddr = oldQ->d + oldQ->front;
+	/* Адрес головы очереди в новом массиве */
+	newHeadAddr = newData;
+	/* Размер в байтах головной части очереди:
+	 * от головного элемента до конца старого массива */
+	headSize = headOffset * sizeof(QueueItemT);
+	/* Адрес начала хвостовой части очереди в старом массиве */
+	oldTailAddr = oldQ->d;
+	/* Адрес начала хвостовой части очереди в новом массиве */
+	newTailAddr = newData + headOffset;
+	/* Размер в байтах хвостовой части очереди:
+	 * от начала старого массива до хвостового элемента */
+	tailSize = oldQ->back * sizeof(QueueItemT);
+	/* Скопировать в новый массив головную часть элементов */
+	memcpy(newHeadAddr, oldHeadAddr, headSize);
+	/* Скопировать в новый массив хвостовую часть элементов */
+	memcpy(newTailAddr, oldTailAddr, tailSize);
+}
+
 /* Вспомогательная функция для enqueue() */
 /* Увеличить допустимый размер очереди в K раз */
 #define K 2
 void extendQueue(QueuePtr q) {
-	int i, j;
 	/* Новый размер массива (в байтах) */
 	size_t newSize = q->capacity * K * sizeof(QueueItemT);
 	/* Расширить массив */
 	if (q->front < q->back) {
 		/* Если элементы расположены в массиве непрерывно от головы до хвоста,
-		 * то просто перераспределить память под новый размер */
+		 * то просто перераспределить память массива под новый размер */
 		q->d = (QueueItemT*)realloc(q->d, newSize);
 		assert(q->d != NULL);
 	} else {
-		/* Иначе создать новый более вместительный массив */
+		/* Иначе создать более вместительный новый массив */
 		QueueItemT *newData = (QueueItemT*)malloc(newSize);
 		assert(newData != NULL);
-		/* Сначала скопировать в новый массив первую половину элементов,
-		 * расположенную от головы очереди до конца старого массива */
-		for (i = 0, j = q->front; j < q->capacity; ++i, ++j) {
-			newData[i] = q->d[j];
-		}
-		/* Затем скопировать вторую половину элементов,
-		 * расположенную от начала старого массива до хвоста очереди */
-		for (j = 0; j < q->back; ++j, ++i) {
-			newData[i] = q->d[j];
-		}
+		/* Перенести элементы очереди из старого массива в новый, 
+		 * восстановив при этом непрерывность последовательности */
+		copyQueue(q, newData, newSize);
 		/* Удалить старый массив */
 		free(q->d);
-		/* Установить ссылку на новый массив */
+		/* Установить ссылку на новый массив очереди */
 		q->d = newData;
-		/* Установить индексы на голову и хвост очереди */
+		/* Установить индексы на головной и хвостовой элементы очереди */
 		q->front = 0;
 		q->back = q->size;
 	}
-	/* Увеличить вместимость очереди в K раз */
+	/* Увеличить значение вместимости очереди в K раз */
 	q->capacity *= K;
 }
 
 /* Вспомогательная функция для enqueue() */
 /* Добавить элемент e в очередь */
 /* Предусловие: очередь не переполнена! */
-void addItementToQueue(QueuePtr q, QueueItemT e) {
+void addItemToQueue(QueuePtr q, QueueItemT e) {
 	assert(!isFullQueue(q));
 	/* Поместить элемент в хвост очереди */
 	if (q->back < q->capacity) {
@@ -128,7 +157,7 @@ void enqueue(QueuePtr q, QueueItemT e) {
 		extendQueue(q);
 	}
 	/* Поставить элемент в очередь */
-	addItementToQueue(q, e);
+	addItemToQueue(q, e);
 }
 
 void dequeue(QueuePtr q) {
@@ -141,7 +170,7 @@ void dequeue(QueuePtr q) {
 		q->front = 0;
 	}
 	/* Уменьшить количество элементов */
-	(q->size)--;
+	q->size--;
 }
 
 QueueItemT frontQueue(QueueReadOnlyPtr q) {

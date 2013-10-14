@@ -8,8 +8,8 @@ typedef int StackItemT;
 /* Тип данных "Стек магазинного типа", 
  * реализация скрыта, доступ через указатель */
 struct StackT;
-typedef struct StackT* StackPtr;
-typedef const struct StackT* StackReadOnlyPtr;
+typedef struct StackT *StackPtr;
+typedef const struct StackT *StackReadOnlyPtr;
 
 /* Создать новый стек с начальной вместимостью startCapacity */
 /* Предусловие: startCapacity > 0 */
