@@ -14,9 +14,9 @@ stack.o: stack.c stack.h
 #3. Если необходимо, то компиляция модуля очереди в объектный файл queue.o
 queue.o: queue.c queue.h
 	gcc -std=c89 -pedantic -Wall -c queue.c
-#3. Если необходимо, то компиляция основной программы в объектный файл main.o
+#4. Если необходимо, то компиляция основной программы в объектный файл main.o
 main.o: main.c stack.h queue.h
 	gcc -std=c89 -pedantic -Wall -c main.c
-#4. Удаление скомпилированных бинарных файлов
+#5. Удаление скомпилированных бинарных файлов
 clean:
 	rm -f stack.o main.o queue.o sdprobe

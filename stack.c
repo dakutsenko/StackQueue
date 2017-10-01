@@ -68,7 +68,7 @@ void extendStack(StackPtr s) {
 /* Вспомогательная функция для pushStack() */
 /* Добавить элемент e в стек */
 /* Предусловие: стек не переполнен! */
-void addItementToStack(StackPtr s, StackItemT e) {
+void addItemToStack(StackPtr s, StackItemT e) {
 	assert(!isFullStack(s));
 	/* Переставить вершину на следующую позицию */
 	s->t++;
@@ -82,7 +82,7 @@ void pushStack(StackPtr s, StackItemT e) {
 		extendStack(s);
 	}
 	/* Добавить в стек элемент */
-	addItementToStack(s, e);
+	addItemToStack(s, e);
 }
 
 StackItemT topStack(StackReadOnlyPtr s) {
